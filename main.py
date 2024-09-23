@@ -39,7 +39,8 @@ def on_check_phone(message):
 
 @bot.message_handler(commands=['enter_phone'])
 def on_enter_phone(message):
-    match = re.fullmatch(r'^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$', message.text.strip())
+    match = re.fullmatch(r'^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$',
+                         message.text.strip())
     if not match:
         bot.send_message(message.from_user.id, "Введи корректный номер телефона")
         bot.register_next_step_handler(message, on_enter_phone)
