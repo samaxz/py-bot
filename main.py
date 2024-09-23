@@ -1,5 +1,13 @@
 import sqlalchemy
 import telebot
+import os
+import psutil
+import platform
+from datetime import datetime
+import cpuinfo
+import socket
+import uuid
+import re
 from sqlalchemy import MetaData, Table, Column, Integer, String, select
 
 from constants import postg_name, postg_pass, bot_token
@@ -19,7 +27,8 @@ bot = telebot.TeleBot(f'{bot_token}')
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.send_message(message.from_user.id,
-                     f"Этот бот используется для проверок телефона и email. Используй {'/check_phone'}, {'/ check_email'} или {'/check_password'}, чтобы начать")
+                     f"""Этот бот используется для проверок телефона, email, пароля и отображения характеристик девайса. 
+Используй {'/check_phone'}, {'/check_email'},  {'/check_password'}, {'/check_specs'} чтобы начать""")
 
 
 @bot.message_handler(commands=['check_phone'])
@@ -34,10 +43,10 @@ def on_enter_phone(message):
     result = connection.execute(selected_phone)
 
     if result.first() is not None:
-        print('phone has been found')
+        bot.send_message(message.from_user.id, 'phone has been found')
         bot.send_message(message.from_user.id, 'Данный номер присутствует в БД 😀')
     else:
-        print('phone is absent')
+        bot.send_message(message.from_user.id, 'phone is absent')
         bot.send_message(message.from_user.id, 'Данный номер отсутствует в БД ☹️')
 
 
@@ -53,10 +62,10 @@ def on_enter_email(message):
     result = connection.execute(selected_email)
 
     if result.first() is not None:
-        print('email has been found')
+        bot.send_message(message.from_user.id, 'email has been found')
         bot.send_message(message.from_user.id, 'Данный email присутствует в БД 😀')
     else:
-        print('email is absent')
+        bot.send_message(message.from_user.id, 'email is absent')
         bot.send_message(message.from_user.id, 'Данный email отсутствует в БД ☹️')
 
 
@@ -100,14 +109,134 @@ def on_enter_password(message):
                 bot.send_message(message.from_user.id, f"{recommendation}")
 
         else:
-            bot.send_message(message.from_user.id, 'Хороший пароль, nice job')
+            bot.send_message(message.from_user.id, 'Хороший пароль, nice job 😉')
+
+
+def get_size(bytes, suffix="B"):
+    """
+    Scale bytes to its proper format
+    e.g:
+        1253656 => '1.20MB'
+        1253656678 => '1.17GB'
+    """
+    factor = 1024
+    for unit in ["", "K", "M", "G", "T", "P"]:
+        if bytes < factor:
+            return f"{bytes:.2f}{unit}{suffix}"
+        bytes /= factor
+
+
+@bot.message_handler(commands=['check_specs'])
+def system_information(message):
+    # bot.send_message(message.from_user.id, "="*40, "System Information", "="*40)
+    bot.send_message(message.from_user.id, f"****System Information****")
+    uname = platform.uname()
+    bot.send_message(message.from_user.id, f"System: {uname.system}")
+    bot.send_message(message.from_user.id, f"Node Name: {uname.node}")
+    bot.send_message(message.from_user.id, f"Release: {uname.release}")
+    bot.send_message(message.from_user.id, f"Version: {uname.version}")
+    bot.send_message(message.from_user.id, f"Machine: {uname.machine}")
+    bot.send_message(message.from_user.id, f"Processor: {uname.processor}")
+    bot.send_message(message.from_user.id, f"Processor: {cpuinfo.get_cpu_info()['brand_raw']}")
+    bot.send_message(message.from_user.id, f"Ip-Address: {socket.gethostbyname(socket.gethostname())}")
+    bot.send_message(message.from_user.id, f"Mac-Address: {':'.join(re.findall('..', '%012x' % uuid.getnode()))}")
+
+    # Boot Time
+    # bot.send_message(message.from_user.id,"="*40, "Boot Time", "="*40)
+    bot.send_message(message.from_user.id, '***Boot time***')
+    boot_time_timestamp = psutil.boot_time()
+    bt = datetime.fromtimestamp(boot_time_timestamp)
+    bot.send_message(message.from_user.id,
+                     f"Boot Time: {bt.year}/{bt.month}/{bt.day} {bt.hour}:{bt.minute}:{bt.second}")
+
+    # print CPU information
+    # bot.send_message(message.from_user.id,"="*40, "CPU Info", "="*40)
+    bot.send_message(message.from_user.id, "CPU Info")
+    # number of cores
+    bot.send_message(message.from_user.id, f"Physical cores: {psutil.cpu_count(logical=False)}")
+    bot.send_message(message.from_user.id, f"Total cores: {psutil.cpu_count(logical=True)}")
+    # CPU frequencies
+    cpufreq = psutil.cpu_freq()
+    bot.send_message(message.from_user.id, f"Max Frequency: {cpufreq.max:.2f}Mhz")
+    bot.send_message(message.from_user.id, f"Min Frequency: {cpufreq.min:.2f}Mhz")
+    bot.send_message(message.from_user.id, f"Current Frequency: {cpufreq.current:.2f}Mhz")
+    # CPU usage
+    bot.send_message(message.from_user.id, "CPU Usage Per Core:")
+    for i, percentage in enumerate(psutil.cpu_percent(percpu=True, interval=1)):
+        bot.send_message(message.from_user.id, f"Core {i}: {percentage}%")
+    bot.send_message(message.from_user.id, f"Total CPU Usage: {psutil.cpu_percent()}%")
+
+    # Memory Information
+    # bot.send_message(message.from_user.id,"="*40, "Memory Information", "="*40)
+    bot.send_message(message.from_user.id, "Memory Information")
+    # get the memory details
+    svmem = psutil.virtual_memory()
+    bot.send_message(message.from_user.id, f"Total: {get_size(svmem.total)}")
+    bot.send_message(message.from_user.id, f"Available: {get_size(svmem.available)}")
+    bot.send_message(message.from_user.id, f"Used: {get_size(svmem.used)}")
+    bot.send_message(message.from_user.id, f"Percentage: {svmem.percent}%")
+
+    # bot.send_message(message.from_user.id,"="*20, "SWAP", "="*20)
+    bot.send_message(message.from_user.id, "SWAP")
+    # get the swap memory details (if exists)
+    swap = psutil.swap_memory()
+    bot.send_message(message.from_user.id, f"Total: {get_size(swap.total)}")
+    bot.send_message(message.from_user.id, f"Free: {get_size(swap.free)}")
+    bot.send_message(message.from_user.id, f"Used: {get_size(swap.used)}")
+    bot.send_message(message.from_user.id, f"Percentage: {swap.percent}%")
+
+    # Disk Information
+    # bot.send_message(message.from_user.id,"="*40, "Disk Information", "="*40)
+    bot.send_message(message.from_user.id, "Disk Information")
+    bot.send_message(message.from_user.id, "Partitions and Usage:")
+    # get all disk partitions
+    partitions = psutil.disk_partitions()
+    for partition in partitions:
+        bot.send_message(message.from_user.id, f"=== Device: {partition.device} ===")
+        bot.send_message(message.from_user.id, f"  Mountpoint: {partition.mountpoint}")
+        bot.send_message(message.from_user.id, f"  File system type: {partition.fstype}")
+        try:
+            partition_usage = psutil.disk_usage(partition.mountpoint)
+        except PermissionError:
+            # this can be catched due to the disk that
+            # isn't ready
+            continue
+        bot.send_message(message.from_user.id, f"  Total Size: {get_size(partition_usage.total)}")
+        bot.send_message(message.from_user.id, f"  Used: {get_size(partition_usage.used)}")
+        bot.send_message(message.from_user.id, f"  Free: {get_size(partition_usage.free)}")
+        bot.send_message(message.from_user.id, f"  Percentage: {partition_usage.percent}%")
+    # get IO statistics since boot
+    disk_io = psutil.disk_io_counters()
+    bot.send_message(message.from_user.id, f"Total read: {get_size(disk_io.read_bytes)}")
+    bot.send_message(message.from_user.id, f"Total write: {get_size(disk_io.write_bytes)}")
+
+    ## Network information
+    # bot.send_message(message.from_user.id,"="*40, "Network Information", "="*40)
+    bot.send_message(message.from_user.id, "Network Information")
+    ## get all network interfaces (virtual and physical)
+    if_addrs = psutil.net_if_addrs()
+    for interface_name, interface_addresses in if_addrs.items():
+        for address in interface_addresses:
+            bot.send_message(message.from_user.id, f"=== Interface: {interface_name} ===")
+            if str(address.family) == 'AddressFamily.AF_INET':
+                bot.send_message(message.from_user.id, f"  IP Address: {address.address}")
+                bot.send_message(message.from_user.id, f"  Netmask: {address.netmask}")
+                bot.send_message(message.from_user.id, f"  Broadcast IP: {address.broadcast}")
+            elif str(address.family) == 'AddressFamily.AF_PACKET':
+                bot.send_message(message.from_user.id, f"  MAC Address: {address.address}")
+                bot.send_message(message.from_user.id, f"  Netmask: {address.netmask}")
+                bot.send_message(message.from_user.id, f"  Broadcast MAC: {address.broadcast}")
+    ##get IO statistics since boot
+    net_io = psutil.net_io_counters()
+    bot.send_message(message.from_user.id, f"Total Bytes Sent: {get_size(net_io.bytes_sent)}")
+    bot.send_message(message.from_user.id, f"Total Bytes Received: {get_size(net_io.bytes_recv)}")
 
 
 @bot.message_handler(content_types=['text'])
 def handle_text(message):
     if (message.text != '/check_phone') or (message.text != '/check_email'):
         bot.send_message(message.from_user.id,
-                         f"Данная команда недоступна. Используй {'/check_phone'}, {'/check_email'} или {'/check_password'}")
+                         f"Данная команда недоступна. Используй {'/check_phone'}, {'/check_email'}, {'/check_password'} или {'/check_specs'}")
 
 
 bot.infinity_polling()

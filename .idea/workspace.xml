@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="changed db password and did refactoring">
+    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="added password check">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -107,13 +107,22 @@
       <option name="project" value="LOCAL" />
       <updated>1727084476815</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added password check">
+      <option name="closed" value="true" />
+      <created>1727093646094</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1727093646094</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init idk" />
     <MESSAGE value="added email check and removed comments" />
     <MESSAGE value="changed db password and did refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed db password and did refactoring" />
+    <MESSAGE value="added password check" />
+    <option name="LAST_COMMIT_MESSAGE" value="added password check" />
   </component>
 </project>
