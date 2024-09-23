@@ -1,14 +1,14 @@
-import sqlalchemy
-import telebot
-import os
-import psutil
 import platform
-from datetime import datetime
-import cpuinfo
+import re
 import socket
 import uuid
-import re
-from sqlalchemy import MetaData, Table, Column, Integer, String, select
+from datetime import datetime
+
+import cpuinfo
+import psutil
+import sqlalchemy
+import telebot
+from sqlalchemy import MetaData, Table, Column, Integer, String
 
 from constants import postg_name, postg_pass, bot_token
 
@@ -39,20 +39,18 @@ def on_check_phone(message):
 
 @bot.message_handler(commands=['enter_phone'])
 def on_enter_phone(message):
-    # match = re.fullmatch(r'\b\+?[7,8](\s*\d{3}\s*\d{3}\s*\d{2}\s*\d{2})\b', r'Т. 12-12')
-    # if not match:
-    #     bot.send_message(message.from_user.id, "Введи корректный номер телефона")
-    #     bot.register_next_step_handler(message, on_enter_phone)
-    #     return
+    match = re.fullmatch(r'^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$', message.text.strip())
+    if not match:
+        bot.send_message(message.from_user.id, "Введи корректный номер телефона")
+        bot.register_next_step_handler(message, on_enter_phone)
+        return
 
     selected_phone = phones.select().where(phones.c.phone == message.text.strip())
     result = connection.execute(selected_phone)
 
     if result.first() is not None:
-        # bot.send_message(message.from_user.id, 'phone has been found')
         bot.send_message(message.from_user.id, 'Данный номер присутствует в БД 😀')
     else:
-        # bot.send_message(message.from_user.id, 'phone is absent')
         bot.send_message(message.from_user.id, 'Данный номер отсутствует в БД ☹️')
 
 
@@ -64,14 +62,19 @@ def on_check_phone(message):
 
 @bot.message_handler(commands=['enter_email'])
 def on_enter_email(message):
+    match = re.fullmatch(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
+                         message.text.strip())
+    if not match:
+        bot.send_message(message.from_user.id, "Введи корректный email")
+        bot.register_next_step_handler(message, on_enter_email)
+        return
+
     selected_email = emails.select().where(emails.c.email == message.text.strip())
     result = connection.execute(selected_email)
 
     if result.first() is not None:
-        # bot.send_message(message.from_user.id, 'email has been found')
         bot.send_message(message.from_user.id, 'Данный email присутствует в БД 😀')
     else:
-        # bot.send_message(message.from_user.id, 'email is absent')
         bot.send_message(message.from_user.id, 'Данный email отсутствует в БД ☹️')
 
 
@@ -134,7 +137,6 @@ def get_size(bytes, suffix="B"):
 
 @bot.message_handler(commands=['check_specs'])
 def system_information(message):
-    # bot.send_message(message.from_user.id, "="*40, "System Information", "="*40)
     bot.send_message(message.from_user.id, f"****System Information****")
     uname = platform.uname()
     bot.send_message(message.from_user.id, f"System: {uname.system}")
@@ -148,7 +150,6 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Mac-Address: {':'.join(re.findall('..', '%012x' % uuid.getnode()))}")
 
     # Boot Time
-    # bot.send_message(message.from_user.id,"="*40, "Boot Time", "="*40)
     bot.send_message(message.from_user.id, '***Boot time***')
     boot_time_timestamp = psutil.boot_time()
     bt = datetime.fromtimestamp(boot_time_timestamp)
@@ -156,7 +157,6 @@ def system_information(message):
                      f"Boot Time: {bt.year}/{bt.month}/{bt.day} {bt.hour}:{bt.minute}:{bt.second}")
 
     # print CPU information
-    # bot.send_message(message.from_user.id,"="*40, "CPU Info", "="*40)
     bot.send_message(message.from_user.id, "CPU Info")
     # number of cores
     bot.send_message(message.from_user.id, f"Physical cores: {psutil.cpu_count(logical=False)}")
@@ -173,7 +173,6 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Total CPU Usage: {psutil.cpu_percent()}%")
 
     # Memory Information
-    # bot.send_message(message.from_user.id,"="*40, "Memory Information", "="*40)
     bot.send_message(message.from_user.id, "Memory Information")
     # get the memory details
     svmem = psutil.virtual_memory()
@@ -182,7 +181,6 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Used: {get_size(svmem.used)}")
     bot.send_message(message.from_user.id, f"Percentage: {svmem.percent}%")
 
-    # bot.send_message(message.from_user.id,"="*20, "SWAP", "="*20)
     bot.send_message(message.from_user.id, "SWAP")
     # get the swap memory details (if exists)
     swap = psutil.swap_memory()
@@ -192,7 +190,6 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Percentage: {swap.percent}%")
 
     # Disk Information
-    # bot.send_message(message.from_user.id,"="*40, "Disk Information", "="*40)
     bot.send_message(message.from_user.id, "Disk Information")
     bot.send_message(message.from_user.id, "Partitions and Usage:")
     # get all disk partitions
@@ -217,7 +214,6 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Total write: {get_size(disk_io.write_bytes)}")
 
     ## Network information
-    # bot.send_message(message.from_user.id,"="*40, "Network Information", "="*40)
     bot.send_message(message.from_user.id, "Network Information")
     ## get all network interfaces (virtual and physical)
     if_addrs = psutil.net_if_addrs()
