@@ -28,7 +28,7 @@ bot = telebot.TeleBot(f'{bot_token}')
 def send_welcome(message):
     bot.send_message(message.from_user.id,
                      f"""Этот бот используется для проверок телефона, email, пароля и отображения характеристик девайса. 
-Используй {'/check_phone'}, {'/check_email'},  {'/check_password'}, {'/check_specs'} чтобы начать""")
+Используй {'/check_phone'}, {'/check_email'},  {'/check_password'}, {'/check_specs'}, чтобы начать""")
 
 
 @bot.message_handler(commands=['check_phone'])
@@ -39,14 +39,20 @@ def on_check_phone(message):
 
 @bot.message_handler(commands=['enter_phone'])
 def on_enter_phone(message):
+    # match = re.fullmatch(r'\b\+?[7,8](\s*\d{3}\s*\d{3}\s*\d{2}\s*\d{2})\b', r'Т. 12-12')
+    # if not match:
+    #     bot.send_message(message.from_user.id, "Введи корректный номер телефона")
+    #     bot.register_next_step_handler(message, on_enter_phone)
+    #     return
+
     selected_phone = phones.select().where(phones.c.phone == message.text.strip())
     result = connection.execute(selected_phone)
 
     if result.first() is not None:
-        bot.send_message(message.from_user.id, 'phone has been found')
+        # bot.send_message(message.from_user.id, 'phone has been found')
         bot.send_message(message.from_user.id, 'Данный номер присутствует в БД 😀')
     else:
-        bot.send_message(message.from_user.id, 'phone is absent')
+        # bot.send_message(message.from_user.id, 'phone is absent')
         bot.send_message(message.from_user.id, 'Данный номер отсутствует в БД ☹️')
 
 
@@ -62,10 +68,10 @@ def on_enter_email(message):
     result = connection.execute(selected_email)
 
     if result.first() is not None:
-        bot.send_message(message.from_user.id, 'email has been found')
+        # bot.send_message(message.from_user.id, 'email has been found')
         bot.send_message(message.from_user.id, 'Данный email присутствует в БД 😀')
     else:
-        bot.send_message(message.from_user.id, 'email is absent')
+        # bot.send_message(message.from_user.id, 'email is absent')
         bot.send_message(message.from_user.id, 'Данный email отсутствует в БД ☹️')
 
 
