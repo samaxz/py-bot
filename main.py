@@ -11,6 +11,8 @@ meta = MetaData()
 phones = Table('phones', meta, Column('id', Integer, primary_key=True), Column('phone', String), )
 emails = Table('emails', meta, Column('id', Integer, primary_key=True), Column('email', String), )
 
+connection = engine.connect()
+
 bot = telebot.TeleBot(f'{bot_token}')
 
 
@@ -29,7 +31,6 @@ def on_check_phone(message):
 @bot.message_handler(commands=['enter_phone'])
 def on_enter_phone(message):
     selected_phone = phones.select().where(phones.c.phone == message.text.strip())
-    connection = engine.connect()
     result = connection.execute(selected_phone)
 
     if result.first() is not None:
@@ -49,7 +50,6 @@ def on_check_phone(message):
 @bot.message_handler(commands=['enter_email'])
 def on_enter_email(message):
     selected_email = emails.select().where(emails.c.email == message.text.strip())
-    connection = engine.connect()
     result = connection.execute(selected_email)
 
     if result.first() is not None:
