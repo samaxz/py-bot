@@ -138,8 +138,11 @@ def get_size(bytes, suffix="B"):
 
 @bot.message_handler(commands=['check_specs'])
 def system_information(message):
+    # отправляет сообщение
     bot.send_message(message.from_user.id, f"****System Information****")
+    # создаёт экземпляр класса
     uname = platform.uname()
+    # отправляет сообщения с данными о разных системных характеристиках
     bot.send_message(message.from_user.id, f"System: {uname.system}")
     bot.send_message(message.from_user.id, f"Node Name: {uname.node}")
     bot.send_message(message.from_user.id, f"Release: {uname.release}")
@@ -150,9 +153,11 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Ip-Address: {socket.gethostbyname(socket.gethostname())}")
     bot.send_message(message.from_user.id, f"Mac-Address: {':'.join(re.findall('..', '%012x' % uuid.getnode()))}")
 
-    # Boot Time
+    # Boot Time - время включения
     bot.send_message(message.from_user.id, '***Boot time***')
+    # дата и время включения
     boot_time_timestamp = psutil.boot_time()
+    # преобразование строки к объекту date time
     bt = datetime.fromtimestamp(boot_time_timestamp)
     bot.send_message(message.from_user.id,
                      f"Boot Time: {bt.year}/{bt.month}/{bt.day} {bt.hour}:{bt.minute}:{bt.second}")
@@ -214,9 +219,9 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Total read: {get_size(disk_io.read_bytes)}")
     bot.send_message(message.from_user.id, f"Total write: {get_size(disk_io.write_bytes)}")
 
-    ## Network information
+    # Network information
     bot.send_message(message.from_user.id, "Network Information")
-    ## get all network interfaces (virtual and physical)
+    # get all network interfaces (virtual and physical)
     if_addrs = psutil.net_if_addrs()
     for interface_name, interface_addresses in if_addrs.items():
         for address in interface_addresses:
@@ -229,7 +234,7 @@ def system_information(message):
                 bot.send_message(message.from_user.id, f"  MAC Address: {address.address}")
                 bot.send_message(message.from_user.id, f"  Netmask: {address.netmask}")
                 bot.send_message(message.from_user.id, f"  Broadcast MAC: {address.broadcast}")
-    ##get IO statistics since boot
+    # get IO statistics since boot
     net_io = psutil.net_io_counters()
     bot.send_message(message.from_user.id, f"Total Bytes Sent: {get_size(net_io.bytes_sent)}")
     bot.send_message(message.from_user.id, f"Total Bytes Received: {get_size(net_io.bytes_recv)}")
