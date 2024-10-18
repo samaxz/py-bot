@@ -38,13 +38,6 @@ class Phone(Base):
     phone = Column(String, unique=True, index=True)
 
 
-# TODO remove this
-# def validate_phone(phone):
-#     match = re.fullmatch(r'^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$',
-#                          phone)
-#     return match
-
-
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     bot.send_message(message.from_user.id,
@@ -107,7 +100,6 @@ def on_check_password(message):
 
 
 @bot.message_handler(commands=['enter_password'])
-# @bot.message_handler()
 def on_enter_password(message):
     digits = '1234567890'
     upper_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -262,34 +254,13 @@ def system_information(message):
     bot.send_message(message.from_user.id, f"Total Bytes Received: {get_size(net_io.bytes_recv)}")
 
 
-# @bot.message_handler(commands=['check_or_add_number'])
-# def on_check_or_add_number(message):
-#     # if the phone's in the db, then display a message saying it's already
-#     # present
-#     # if not, then add that phone to the db and display an appropriate message
-# #     TODO add a check here for the model inside the db
-
 @bot.message_handler(commands=['check_or_add_phone'])
 def check_or_add_phone(message):
     bot.send_message(message.from_user.id, "Введи номер телефона для проверки")
     bot.register_next_step_handler(message, on_check_or_add_phone)
 
 
-# @bot.message_handler(commands=['on_add_phone'])
 def on_add_phone(message):
-    # match = re.fullmatch(r'^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$',
-    #                      message.text.strip())
-    # if not match:
-    #     bot.send_message(message.from_user.id, "Введи корректный номер телефона")
-    #     bot.register_next_step_handler(message, on_add_phone)
-    #     return
-
-    # print('this now must be here, am i right?')
-    # new_phone = insert(phones).values(phone=message.text.strip())
-    # print(new_phone)
-    # result = connection.execute(new_phone)
-
-    # TODO change this
     new_phone = Phone(phone=saved_phone)
     db.add(new_phone)
 
@@ -305,17 +276,6 @@ def on_add_phone(message):
     # Close the session
     db.close()
 
-    # new_phone = phones.insert().values(phone=message.text.strip())
-    # result = connection.execute(new_phone)
-
-    # print(f'phones: {phones.select().where()}')
-    # selected_phone = phones.select().where(phones.c.phone == text)
-
-    # selected_email = emails.select().where(emails.c.email == message.text.strip())
-    # result = connection.execute(selected_email)
-
-    # print(result)
-    # print(phones)
     bot.send_message(message.from_user.id, 'Готово ✅')
 
 
@@ -323,13 +283,11 @@ def on_add_phone(message):
 def on_decide_to_add(message):
     if message.text.strip() == 'yes' or message.text.strip() == 'да':
         on_add_phone(message)
-        # print('hellooooo')
     else:
         bot.send_message(message.from_user.id, 'Нууу, нет, так нет')
 
 
 @bot.message_handler(commands=['on_check_or_add_phone'])
-# @bot.message_handler()
 def on_check_or_add_phone(message):
     match = re.fullmatch(r'^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$',
                          message.text.strip())
@@ -350,22 +308,6 @@ def on_check_or_add_phone(message):
         global saved_phone
         saved_phone = text
         bot.register_next_step_handler(message, on_decide_to_add)
-
-        # if text == 'yes':
-        #     # match = re.fullmatch(r'^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$',
-        #     #                      text)
-        #     # if not match:
-        #     #     bot.send_message(message.from_user.id, "Введи корректный номер телефона")
-        #     #     # bot.register_next_step_handler(message, on_check_or_add_phone)
-        #     #     bot.register_next_step_handler(message, add_phone)
-        #     #     return
-        #     #
-        #     # updated_table = insert(phones).values(phone=text)
-        #     # print(updated_table)
-        #     on_add_phone()
-        #
-        # else:
-        #     bot.send_message(message.from_user.id, 'Нууу, нет, так нет')
 
 
 @bot.message_handler(content_types=['text'])
