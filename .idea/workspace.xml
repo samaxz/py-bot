@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="before removing comments">
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="removed comments">
+      <change afterPath="$PROJECT_DIR$/laba.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -163,7 +164,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729244689770</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="removed comments">
+      <option name="closed" value="true" />
+      <created>1729250634257</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1729250634257</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -188,6 +197,7 @@
     <MESSAGE value="refactored and got an a" />
     <MESSAGE value="added comments" />
     <MESSAGE value="before removing comments" />
-    <option name="LAST_COMMIT_MESSAGE" value="before removing comments" />
+    <MESSAGE value="removed comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed comments" />
   </component>
 </project>
