@@ -15,52 +15,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
-#  adminer:
-#    image: adminer
-#    restart: always
-#    ports:
-#      - 8080:8080
-
+# TODO prolly remove this in the future
 volumes:
   pgdata:
-
-#version: "3"
-#services:
-##
-#backend:
-#  build:
-#    context: diabetesmelitusbackend
-#     args:
-#      - DATABASE_ENGINE=${DATABASE_ENGINE}
-#      - DATABASE_NAME=${DATABASE_NAME}
-#      - DATABASE_HOST=${DATABASE_HOST}
-#      - DATABASE_USER=${DATABASE_USER}
-#      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-#      - DATABASE_PORT=${DATABASE_PORT}
-#  image: backend
-#  ports:
-#    - "9000:9000"
-#  extra_hosts:
-#    - "host.docker.internal:127.0.0.1"
-
-#database:
-#    image: postgres:17
-#    container_name: py-bot-database
-#    environment:
-#      POSTGRES_USER: ${POSTGRES_USER}
-#      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-#    expose:
-#      - "5432"
-#    ports:
-#      - 8000:5432
-#    volumes:
-#      - ./services/database/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
-#      - ./services/database/seed.sql:/docker-entrypoint-initdb.d/2-seed.sql
-#  pgadmin:
-#    image: dpage/pgadmin4
-#    ports:
-#      - 5454:5454/tcp
-#    environment:
-#      - PGADMIN_DEFAULT_EMAIL=samax.zer@gmail.com
-#      - PGADMIN_DEFAULT_PASSWORD=postg
-#      - PGADMIN_LISTEN_PORT=5454
