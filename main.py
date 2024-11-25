@@ -8,7 +8,7 @@ import cpuinfo
 import psutil
 import sqlalchemy
 import telebot
-from sqlalchemy import MetaData, Table, Column, Integer, String, insert
+from sqlalchemy import MetaData, Table, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 from constants import postg_name, postg_pass, bot_token

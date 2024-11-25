@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="misc updates">
+    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="removed outdated file">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,6 +25,12 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/samaxz/py-bot.git",
+    "accountId": "53688376-5638-4d48-8d56-b6cfbfabb9d0"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -212,7 +219,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731857995099</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="udpated comments">
+      <option name="closed" value="true" />
+      <created>1731859261422</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1731859261422</updated>
+    </task>
+    <task id="LOCAL-00018" summary="removed outdated file">
+      <option name="closed" value="true" />
+      <created>1731859408735</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1731859408735</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -243,6 +266,8 @@
     <MESSAGE value="added and configured compose file" />
     <MESSAGE value="updated dockerfile" />
     <MESSAGE value="misc updates" />
-    <option name="LAST_COMMIT_MESSAGE" value="misc updates" />
+    <MESSAGE value="udpated comments" />
+    <MESSAGE value="removed outdated file" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed outdated file" />
   </component>
 </project>
