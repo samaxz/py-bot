@@ -9,3 +9,10 @@ class Phone(Base):
 
   id = Column(Integer, primary_key=True, index=True)
   phone = Column(String, unique=True, index=True)
+
+
+class Email(Base):
+  __tablename__ = 'emails'
+
+  id = Column(Integer, primary_key=True, index=True)
+  email = Column(String, unique=True, index=True)

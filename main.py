@@ -12,7 +12,7 @@ from sqlalchemy import MetaData, Table, Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 
 from constants import postg_name, postg_pass, bot_token
-from phone_model import Phone
+from models import Phone, Email
 
 DB_URL = f'postgresql://{postg_name}:{postg_pass}@py-bot-db:5432/py-bot-db'
 engine = sqlalchemy.create_engine(DB_URL, echo=True)
@@ -24,8 +24,27 @@ db = SessionLocal()
 phones = Table('phones', meta, Column('id', Integer, primary_key=True), Column('phone', String), )
 emails = Table('emails', meta, Column('id', Integer, primary_key=True), Column('email', String), )
 
-if not engine.dialect.has_table(engine.connect(), 'phones') or not engine.dialect.has_table(engine.connect(), 'emails'):
+if not engine.dialect.has_table(engine.connect(), Phone.__tablename__) or not engine.dialect.has_table(engine.connect(),
+                                                                                                       Email.__tablename__):
   meta.create_all(engine)
+  first_phone = Phone(phone='88005553535')
+  second_phone = Phone(phone='89287776996')
+  first_email = Email(email='test@mail.ru')
+  second_email = Email(email='me@gmail.com')
+
+  db.add_all([first_phone, second_phone, first_email, second_email])
+
+  # Commit the transaction
+  db.commit()
+
+  # Refresh the new_user instance to get the latest data from the database
+  db.refresh(first_phone)
+  db.refresh(second_phone)
+  db.refresh(first_email)
+  db.refresh(second_email)
+
+  # Close the session
+  db.close()
 
 connection = engine.connect()
 
