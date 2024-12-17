@@ -1,19 +1,29 @@
 version: "3"
 
 services:
+  db:
+    image: postgres
+    container_name: py-bot-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postg
+      POSTGRES_DB: py-bot-db
+    volumes:
+#      - pgdata:/var/lib/postgresql/data
+      - ./postgres/data:/var/lib/db/data
+      - ./postgres/py-bot-db.sql:/docker-entrypoint-initdb.d/py-bot-db.sql
+
   bot:
     image: py-bot
     container_name: py-bot
     restart: always
+    build:
+      dockerfile: Dockerfile
+    depends_on:
+      - db
 
-  postgres:
-    image: postgres
-    container_name: py-bot-postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: postg
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+
 
 # TODO prolly remove this in the future
 volumes:

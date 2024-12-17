@@ -13,12 +13,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 from constants import postg_name, postg_pass, bot_token
 
-# DB_URL = f'postgresql://{postg_name}:{postg_pass}@localhost:5432/net_lab_checker'
-# for containerized postgres
-DB_URL = f'postgresql://{postg_name}:{postg_pass}@py-bot-postgres:5432/py-bot-db'
-# works with local postgres
-# TODO use environment variables in the future
-# DB_URL = f'postgresql://{postg_name}:{postg_pass}@host.docker.internal:5432/py-bot-db'
+DB_URL = f'postgresql://{postg_name}:{postg_pass}@py-bot-db:5432/py-bot-db'
 engine = sqlalchemy.create_engine(DB_URL, echo=True)
 meta = MetaData()
 Base = declarative_base()
