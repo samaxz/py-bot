@@ -4,17 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="removed outdated file">
-      <change afterPath="$PROJECT_DIR$/constants.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/py-bot-db.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/py_bot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/py_bot.iml" afterDir="false" />
+    <list default="true" id="be230f77-6c7e-479f-9768-36c1a88f320f" name="Changes" comment="updated stuff">
+      <change afterPath="$PROJECT_DIR$/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/py-bot-db.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,12 +27,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/samaxz/py-bot.git&quot;,
-    &quot;accountId&quot;: &quot;53688376-5638-4d48-8d56-b6cfbfabb9d0&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "samaxz"
   }
-}</component>
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/samaxz/py-bot.git",
+    "accountId": "2802eb37-6c7a-4f66-8407-71749c60e56e"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -246,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731859408735</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="updated stuff">
+      <option name="closed" value="true" />
+      <created>1734430927460</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1734430927460</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -279,6 +289,7 @@
     <MESSAGE value="misc updates" />
     <MESSAGE value="udpated comments" />
     <MESSAGE value="removed outdated file" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed outdated file" />
+    <MESSAGE value="updated stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated stuff" />
   </component>
 </project>
